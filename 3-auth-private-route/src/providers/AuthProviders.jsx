@@ -1,21 +1,70 @@
 import PropTypes from "prop-types";
-import { Children, createContext } from "react";
-
+import { createContext, useEffect, useState } from "react";
+import auth from "../firebase/firebase.config";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+} from "firebase/auth";
+// don't forget to export
 export const AuthContext = createContext(null);
+// google provider
+const provider = new GoogleAuthProvider();
 
-const AuthProviders = ({children}) => {
-    const authInfo = {name:'context api is using'}
-    return (
-        <AuthContext.Provider value={authInfo}>
-            {children}
-        </AuthContext.Provider>
-    );
+const AuthProviders = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // create user account
+  const createUser = (email, password) => {
+    setLoading(true);
+    return createUserWithEmailAndPassword(auth, email, password);
+  };
+  // signin user
+  const signIn = (email, password) => {
+    setLoading(true);
+
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+  // signin with google
+  const signInWithGoogle =() => {
+    setLoading(true);
+    return signInWithPopup(auth,provider);
+  }
+  // logout user
+  const logoutUser = () => {
+    setLoading(true);
+    return signOut(auth);
+  };
+
+  // observe current user
+  useEffect(() => {
+    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+      console.log(
+        "observing current user inside useEffect of authProvider",
+        currentUser,
+      );
+    });
+    return () => unSubscribe();
+  }, []);
+
+  const authInfo = { user, createUser, signIn, logoutUser, loading,signInWithGoogle };
+
+  return (
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+  );
 };
 
+// don't forget to export
 export default AuthProviders;
 AuthProviders.propTypes = {
-    children:PropTypes.node
-}
+  children: PropTypes.node,
+};
 
 /**
  * *********** How to use context API **************

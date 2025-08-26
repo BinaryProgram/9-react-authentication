@@ -1,13 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { AuthContext } from "../providers/AuthProviders";
 
 const Register = () => {
+  const {createUser} = useContext(AuthContext);
+  
   const handleRegister = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
     console.log(name,email,password);
+    // context api function
+    createUser(email,password)
+    .then(userCredential => console.log(userCredential.user) )
+    .catch(error => console.log(error.message));
   };
   return (
     <div className="hero">

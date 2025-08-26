@@ -1,12 +1,33 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../providers/AuthProviders";
 
 const Login = () => {
+  const { signIn, signInWithGoogle } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const handleLogin = (e) => {
     e.preventDefault();
-    const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
+    console.log(email, password);
+
+    signIn(email, password)
+      .then((userCredential) => {
+        console.log(userCredential.user);
+        // to vanish form data, when user click on login
+        e.target.reset();
+        // use will navigate to home
+        navigate("/");
+      })
+      .catch((error) => console.error(error));
+  };
+
+  // handle google login
+  const handleGoogleSignIn = () => {
+    signInWithGoogle()
+      .then((result) => console.log(result.user))
+      .catch((error) => console.error(error));
   };
   return (
     <div className="hero">
@@ -48,8 +69,13 @@ const Login = () => {
             <div className="form-control mt-6">
               <button className="btn btn-primary w-full">Login</button>
             </div>
+            <div>
+              <p>
+                Sign in with <span onClick={handleGoogleSignIn} className="btn mr-2 text-amber-200">Google</span>
+              </p>
+            </div>
             <p>
-              New to this site? please{" "}
+              New to this site? please
               <Link to="/register" className="btn btn-link text-lg">
                 Register
               </Link>
