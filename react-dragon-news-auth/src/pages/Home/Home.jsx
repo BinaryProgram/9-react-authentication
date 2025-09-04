@@ -4,21 +4,29 @@ import Navbar from "../Shared/Navbar/Navbar";
 import LeftNavbar from "../LeftNavbar/LeftNavbar";
 import RightNavbar from "../RightNavbar/RightNavbar";
 import BreakingNews from "./BreakingNews";
+import { useLoaderData } from "react-router-dom";
+import News from "../News/News";
 
 const Home = () => {
+  const allNews = useLoaderData();
   return (
     <div>
       <Header />
-      <BreakingNews/>
+      <BreakingNews />
       <Navbar />
       <div className="grid md:grid-cols-4 gap-5">
-        <div className="border">
+        <div>
           <LeftNavbar />
         </div>
-        <div className="md:col-span-2 border">
-          <h1>middle part</h1>
+        <div className="md:col-span-2">
+          <h1 className="font-poppins text-[#403f3f] text-xl font-extrabold">
+            Dragon News Home
+          </h1>
+          {allNews.map((news) => (
+            <News key={news._id} news={news} />
+          ))}
         </div>
-        <div className="border">
+        <div>
           <RightNavbar />
         </div>
       </div>

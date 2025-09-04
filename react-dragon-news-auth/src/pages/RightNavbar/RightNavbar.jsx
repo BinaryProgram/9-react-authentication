@@ -88,9 +88,9 @@ const RightNavbar = () => {
           Q-Zone
         </h1>
         <figure className="flex flex-col gap-4 mt-5">
-          <img src="qZone1.png" alt="" />
-          <img src="qZone2.png" alt="" />
-          <img src="qZone3.png" alt="" />
+          <img src="/qZone1.png" alt="" />
+          <img src="/qZone2.png" alt="" />
+          <img src="/qZone3.png" alt="" />
         </figure>
       </aside>
     </section>

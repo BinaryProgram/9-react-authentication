@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const LeftNavbar = () => {
@@ -17,9 +17,11 @@ const LeftNavbar = () => {
         Nationals News
       </h2>
       <aside className="flex flex-col gap-3 mt-7 ml-7">
-        {
-            categories.map(category => <Link to={`/category/${category.id}`} key={category.id}>{category.name}</Link>)
-        }
+        {categories.map((category) => (
+          <Link to={`/category/${category.id}`} key={category.id}>
+            {category.name}
+          </Link>
+        ))}
       </aside>
     </div>
   );
