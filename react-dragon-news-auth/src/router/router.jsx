@@ -24,7 +24,6 @@ const router = createBrowserRouter([
           const data = await res.json();
           return data.find((item) => item._id.toString() === params.id);
         },
-        hydrateFallbackElement:<NewsCard/>
       },
       {
         path: "/loginForm",

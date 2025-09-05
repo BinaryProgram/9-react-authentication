@@ -36,14 +36,15 @@ const AuthProvider = ({ children }) => {
         setUser(currentUser);
         setLoading(false);
       } else {
-        console.log("no user found");
+        console.log("no user login found!");
         setUser(null);
+        setLoading(false);
       }
     });
     return () => unSubscribe();
   }, []);
 
-  const authInfo = { user,loading, registerUser, signinUser, signoutUser };
+  const authInfo = { user, loading, registerUser, signinUser, signoutUser };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
   );

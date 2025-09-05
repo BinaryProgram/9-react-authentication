@@ -1,11 +1,15 @@
 import React, { useContext } from "react";
 import Navbar from "../Shared/Navbar/Navbar";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
 
 const LoginForm = () => {
   const { signinUser } = useContext(AuthContext);
 
+  const location = useLocation();
+  const navigate = useNavigate();
+  console.log(location);
+  
   const handleLogin = (e) => {
     e.preventDefault();
     // different way to access form data
@@ -15,7 +19,10 @@ const LoginForm = () => {
     const password = form.get("password");
 
     signinUser(email, password)
-      .then((userCredential) => console.log(userCredential.user))
+      .then((userCredential) => {
+        console.log(userCredential.user);
+        navigate(location?.state ? location.state : "/");
+      })
       .catch((error) => console.log(error.message));
   };
   return (
